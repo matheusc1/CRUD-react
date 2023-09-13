@@ -1,7 +1,14 @@
 import { Waves, Home, User, Package, LogOut } from 'lucide-react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
+import authServices from '../services/OtherServices'
 
 export default function Sidebar() {
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    authServices.logout(navigate)
+  }
+
   return (
     <div className='overflow-hidden flex'>
       <nav className="bg-zinc-950 min-h-screen w-64  p-4">
@@ -36,7 +43,7 @@ export default function Sidebar() {
             <p className='text-zinc-400 text-sm'>user@email</p>
           </div>
           
-          <LogOut className='text-zinc-300 hover:text-zinc-500 cursor-pointer' />
+            <LogOut onClick={handleLogout} className='text-zinc-300 hover:text-zinc-500 cursor-pointer' />
         </div>
       </nav>
 

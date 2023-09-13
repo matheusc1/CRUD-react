@@ -1,7 +1,14 @@
 import { User, Package } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import authServices from '../services/OtherServices'
 
 export default function Home() {
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    authServices.logout(navigate)
+  }
+
   const clientList = [1, 2, 3]
   const productList = [1, 2]
 
@@ -38,17 +45,17 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col items-start gap-3 mt-8 px-6">
-          <Link to="/clients" className="text-zinc-300 hover:text-zinc-50">
+          <Link to="/clients" className="text-zinc-300 hover:text-zinc-500">
             Ir para clientes
           </Link>
 
-          <Link to="/products" className="text-zinc-300 hover:text-zinc-50">
+          <Link to="/products" className="text-zinc-300 hover:text-zinc-500">
             Ir para produtos
           </Link>
 
-          <Link to="/login" className="text-zinc-300 hover:text-zinc-500">
+          <button onClick={handleLogout} className="text-zinc-300 hover:text-zinc-500">
             Sair
-          </Link>
+          </button>
         </div>
       </div>
     </div>
