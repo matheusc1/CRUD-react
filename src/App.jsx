@@ -11,6 +11,7 @@ import Products from './pages/products'
 import Login from './pages/login'
 import Sidebar from './components/Sidebar'
 import AuthenticatedRoute from './components/AuthenticatedRoutes'
+import { ThemeProvider } from './components/ThemeProvider'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,8 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <RouterProvider router={router} />
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   )
 }
