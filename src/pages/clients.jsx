@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { User, UserPlus, PenLine, Trash2 } from 'lucide-react'
 import { PageRoot } from '../components/PagesRoot'
 import PageHeader from '../components/PageHeader'
@@ -11,32 +12,32 @@ import {
   TableHeader,
   TableRow,
 } from "../components/Table"
-import { Button } from '../components/button'
+import { Button } from '../components/Button'
+import { getClients } from '../services/ApiServices'
+import dayjs from 'dayjs'
 
 export default function Clients() {
-  const clientList = [
-    { id: 1,
-      name: 'Fulano da Silva', 
-      phoneNumber: '(24) 99988-7766', 
-      email: 'fulano@gmail.com', 
-      cpf: '12345678912', 
-      registerDate: '11/09/2023 - 20:00' 
-    },
-    { id: 2,
-      name: 'Fulano de Almeida', 
-      phoneNumber: '(24) 99966-7788', 
-      email: 'fulano@outlook.com', 
-      cpf: '12345678921', 
-      registerDate: '11/09/2023 - 20:12' 
-    },
-    { id: 3,
-      name: 'Fulano de Andrade', 
-      phoneNumber: '(24) 99955-4433', 
-      email: 'fulano@gmail.com', 
-      cpf: '12345678952', 
-      registerDate: '11/09/2023 - 20:14' 
-    },
-  ]
+
+  const [clients, setClients] = useState([])
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const clients = await getClients()
+        setClients(clients)
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  }, [])
+
+  function handleEdit(id) {
+    alert(id)
+  }
+
+  function handleDelete(id) {
+    alert(id)
+  }
 
   return (
     <PageRoot>
@@ -45,7 +46,7 @@ export default function Clients() {
       <div className="flex items-start justify-between px-6 mt-10 gap-6">
         <Counter 
           text="Total de clientes"
-          total={clientList.length}
+          total={clients.length}
           icon={User}
         />
         <Button>
@@ -68,17 +69,23 @@ export default function Clients() {
             </TableRow>
           </TableHeader>
           <TableBody>
-          {clientList.map(client =>
+          {clients.map(client =>
             <TableRow key={client.id}>
               <TableCell className="font-medium">{client.id}</TableCell>
-              <TableCell>{client.name}</TableCell>
-              <TableCell>{client.phoneNumber}</TableCell>
+              <TableCell>{client.nome}</TableCell>
+              <TableCell>{client.telefone}</TableCell>
               <TableCell>{client.email}</TableCell>
-              <TableCell>{client.cpf}0</TableCell>
-              <TableCell>{client.registerDate}</TableCell>
+              <TableCell>{client.cpfOuCnpj}0</TableCell>
+              <TableCell>{dayjs(client.dataCadastro).format('DD/MM/YYYY - HH:mm')}</TableCell>
               <TableCell className='flex gap-2 align-center justify-center'>
-                <PenLine className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" />
-                <Trash2 className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" />
+                <PenLine 
+                  onClick={() => handleEdit(client.id)}
+                  className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
+                />
+                <Trash2
+                  onClick={() => handleDelete(client.id)}
+                  className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
+                />
               </TableCell>
             </TableRow>
           )}

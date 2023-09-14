@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import authenticate from '../services/ApiServices'
+import { authenticate } from '../services/ApiServices'
 import authServices from '../services/OtherServices'
 import { useNavigate } from 'react-router-dom'
 
