@@ -22,3 +22,31 @@ export async function getClients() {
     console.error(error)
   }
 }
+
+export async function addClient(client) {
+  try {
+    const response = await api.post('/clientes', client,
+    {
+      headers: {
+        'Authorization': authServices.getToken()
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error(error.response.data)
+  }
+}
+
+// export async function editClient(id, client) {
+//   try {
+//     const response = await api.put(`/clientes/${id}`, client,
+//     {
+//       headers: {
+//         'Authorization': authServices.getToken()
+//       },
+//     })
+//     return response.data
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
