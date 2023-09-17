@@ -37,16 +37,29 @@ export async function addClient(client) {
   }
 }
 
-// export async function editClient(id, client) {
-//   try {
-//     const response = await api.put(`/clientes/${id}`, client,
-//     {
-//       headers: {
-//         'Authorization': authServices.getToken()
-//       },
-//     })
-//     return response.data
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
+export async function editClient(id, client) {
+  try {
+    const response = await api.put(`/clientes/${id}`, client,
+    {
+      headers: {
+        'Authorization': authServices.getToken()
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function deleteClient(id) {
+  try {
+    const response = await api.delete(`/clientes/${id}`, {
+      headers: {
+        'Authorization': authServices.getToken()
+      }
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+  }
+}

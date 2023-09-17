@@ -4,6 +4,7 @@ import authServices from '../services/OtherServices'
 
 export default function Sidebar() {
   const navigate = useNavigate()
+  const { nome, email, foto } = JSON.parse(authServices.getUser())
 
   function handleLogout() {
     authServices.logout(navigate)
@@ -34,13 +35,13 @@ export default function Sidebar() {
 
         <div className='flex items-center justify-between mt-64 px-1'>
           <img className='h-14 w-14 rounded-full' 
-            src="https://avatars.githubusercontent.com/matheusc1" 
+            src={foto}
             alt="user avatar" 
           />
 
           <div className='flex flex-col items-start gap-1.5'>
-            <p className='text-zinc-900 dark:text-zinc-100 text-base'>Username</p>
-            <p className='text-zinc-600 dark:text-zinc-400 text-sm'>user@email</p>
+            <p className='text-zinc-900 dark:text-zinc-100 text-base'>{nome}</p>
+            <p className='text-zinc-600 dark:text-zinc-400 text-sm'>{email}</p>
           </div>
           
             <LogOut 

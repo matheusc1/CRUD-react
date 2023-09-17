@@ -26,17 +26,18 @@ import {
   AlertDialogTrigger,
 } from "../components/AlertDialog"
 import { Button } from '../components/Button'
-import { getClients, addClient } from '../services/ApiServices'
+import { getClients, addClient, deleteClient, editClient } from '../services/ApiServices'
 import dayjs from 'dayjs'
 
 export default function Clients() {
-
   const [clients, setClients] = useState([])
-  const [name, setName] = useState('')
-  const [phoneNum, setPhoneNum] = useState('')
-  const [email, setEmail] = useState('')
-  const [cpf, setCpf] = useState('')
-  const [date, setDate] = useState(new Date().toISOString())
+  const [client, setClient] = useState({
+    name: '',
+    phoneNum: '',
+    email: '',
+    cpf: '',
+    date: new Date().toISOString()
+  })
 
   useEffect(() => {
     (async () => {
@@ -47,37 +48,60 @@ export default function Clients() {
         console.error(error)
       }
     })()
-  }, [clients])
+  }, [])
 
   async function handleAdd() {
     const currentDate = new Date().toISOString()
-    setDate(currentDate)
+    setClient({
+      ...client,
+      date: currentDate
+    })
 
-    const client = {
-      nome: name,
-      telefone: phoneNum,
-      email: email,
-      cpfOuCnpj: cpf,
-      date: date
+    const clientToAdd = {
+      nome: client.name,
+      telefone: client.phoneNum,
+      email: client.email,
+      cpfOuCnpj: client.cpf,
+      date: client.date
     }
-    const response = await addClient(client)
-    console.log(response)
+
+    await addClient(clientToAdd)
+    const updateClients = await getClients()
+    setClients(updateClients)
   }
 
-  function handleEdit(id) {
-    setDate(new Date().toISOString)
-    console.log(id)
+  async function handleEdit(id) {
+    const currentDate = new Date().toISOString()
+    const editedClient =({
+      ...client,
+      date: currentDate
+    })
+    await editClient(id, editedClient)
+    const updateClients = await getClients()
+    setClients(updateClients)
   }
 
-  function handleCancelEdit() {
-    setName('')
-    setPhoneNum('')
-    setEmail('')
-    setCpf('')
+  async function handleDelete(id) {
+    await deleteClient(id)
+    const updateClients = await getClients()
+    setClients(updateClients)
   }
 
-  function handleDelete(id) {
-    alert(id)
+  function handleChange(e) {
+    setClient({
+      ...client,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  function handleCancel() {
+    setClient({
+      name: '',
+      phoneNum: '',
+      email: '',
+      cpf: '',
+      date: new Date().toISOString()
+    })
   }
 
   return (
@@ -87,7 +111,7 @@ export default function Clients() {
       <div className="flex items-start justify-between px-6 mt-10 gap-6">
         <Counter 
           text="Total de clientes"
-          total={clients.length}
+          total={clients.length ?? 0}
           icon={User}
         />
         <AlertDialog>
@@ -103,57 +127,57 @@ export default function Clients() {
                 Adicione as inforamações do cliente. Clique em salvar quando estiver pronto.
               </AlertDialogDescription>
             </AlertDialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="phoneNumber" className="text-right">
-                    Phone Number
-                  </Label>
-                  <Input
-                    id="phoneNumber"
-                    value={phoneNum}
-                    onChange={e => setPhoneNum(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="email" className="text-right">
-                    E-mail
-                  </Label>
-                  <Input
-                    id="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="cpf" className="text-right">
-                    CPF
-                  </Label>
-                  <Input
-                    id="cpf"
-                    value={cpf}
-                    onChange={e => setCpf(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Name
+                </Label>
+                <Input
+                name="name"
+                id="name"
+                onChange={handleChange}
+                className="col-span-3"
+              />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="phoneNumber" className="text-right">
+                  Phone Number
+                </Label>
+                <Input
+                  name="phoneNum"
+                  id="phoneNumber"
+                  onChange={handleChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="email" className="text-right">
+                  E-mail
+                </Label>
+                <Input
+                  name="email"
+                  id="email"
+                  onChange={handleChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="cpf" className="text-right">
+                  CPF
+                </Label>
+                <Input
+                  name="cpf"
+                  id="cpf"
+                  onChange={handleChange}
+                  className="col-span-3"
+                />
+              </div>
             </div>
             <AlertDialogFooter>
               <AlertDialogCancel
                 type="button"
                 variant='outline'
-                onClick={() => handleCancelEdit()}
+                onClick={() => handleCancel()}
               >
                 Cancelar
               </AlertDialogCancel>
@@ -189,17 +213,35 @@ export default function Clients() {
               <TableCell>{client.nome}</TableCell>
               <TableCell>{client.telefone}</TableCell>
               <TableCell>{client.email}</TableCell>
-              <TableCell>{client.cpfOuCnpj}0</TableCell>
+              <TableCell>{client.cpfOuCnpj}</TableCell>
               <TableCell>{dayjs(client.dataCadastro).format('DD/MM/YYYY - HH:mm')}</TableCell>
-              <TableCell className='flex gap-2 align-center justify-center'>
+              <TableCell className='flex gap-3 align-center justify-center'>
                 <PenLine 
                   onClick={() => handleEdit(client.id)}
                   className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
                 />
-                <Trash2
-                  onClick={() => handleDelete(client.id)}
-                  className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
-                />
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Trash2
+                      className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
+                    />
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Deseja realmente excluir este cliente?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Essa é uma ação irreversível. Isso vai deletar permanentemente
+                        este cliente e deletar todos seus dados do servidor.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(client.id)}>Excluir</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
               </TableCell>
             </TableRow>
           )}
