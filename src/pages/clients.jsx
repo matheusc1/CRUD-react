@@ -3,8 +3,6 @@ import { User, UserPlus, PenLine, Trash2 } from 'lucide-react'
 import { PageRoot } from '../components/PagesRoot'
 import PageHeader from '../components/PageHeader'
 import Counter from '../components/Counter'
-import { Label } from '../components/Label'
-import { Input } from '../components/Input'
 import {
   Table,
   TableBody,
@@ -14,18 +12,15 @@ import {
   TableHeader,
   TableRow,
 } from "../components/Table"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../components/AlertDialog"
-import { Button } from '../components/Button'
+import { AlertDialog, AlertDialogContent } from "../components/AlertDialog"
+import ClientDialogTrigger from '../components/ClientDialog/ClientDialogTrigger'
+import ClientDialogHeader from '../components/ClientDialog/ClientDialogHeader'
+import ClientDialogBody from '../components/ClientDialog/ClientDialogBody'
+import ClientDialogFooter from '../components/ClientDialog/ClientDialogFooter'
+import ActionDialogTrigger from '../components/ActionDialogTrigger'
+import DeleteDialogHeader from '../components/DeleteDialog/DeleteDialogHeader'
+import DeleteDialogFooter from '../components/DeleteDialog/DeleteDialogFooter'
+import EditDialogBody from '../components/EditDialogBody'
 import { getClients, addClient, deleteClient, editClient } from '../services/ApiServices'
 import dayjs from 'dayjs'
 
@@ -51,10 +46,8 @@ export default function Clients() {
   }, [])
 
   async function handleAdd() {
-    const currentDate = new Date().toISOString()
     setClient({
       ...client,
-      date: currentDate
     })
 
     const clientToAdd = {
@@ -68,17 +61,38 @@ export default function Clients() {
     await addClient(clientToAdd)
     const updateClients = await getClients()
     setClients(updateClients)
+    clear()
+  }
+
+  function getClientToEdit(client) {
+    setClient({
+      name: client.nome,
+      phoneNum: client.telefone,
+      email: client.email,
+      cpf: client.cpfOuCnpj,
+      date: new Date().toISOString()
+    })
   }
 
   async function handleEdit(id) {
-    const currentDate = new Date().toISOString()
-    const editedClient =({
+    setClient({
       ...client,
-      date: currentDate
     })
+
+    const editedClient = {
+      nome: client.name,
+      telefone: client.phoneNum,
+      email: client.email,
+      cpfOuCnpj: client.cpf,
+      date: client.date
+    }
+
+    console.log(editedClient)
+
     await editClient(id, editedClient)
     const updateClients = await getClients()
     setClients(updateClients)
+    clear()
   }
 
   async function handleDelete(id) {
@@ -94,7 +108,7 @@ export default function Clients() {
     })
   }
 
-  function handleCancel() {
+  function clear() {
     setClient({
       name: '',
       phoneNum: '',
@@ -108,91 +122,30 @@ export default function Clients() {
     <PageRoot>
       <PageHeader />
 
-      <div className="flex items-start justify-between px-6 mt-10 gap-6">
+      <header className="flex items-start justify-between px-6 mt-10 gap-6">
         <Counter 
           text="Total de clientes"
           total={clients.length ?? 0}
           icon={User}
         />
         <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button>
-              <UserPlus className='mr-2 h-4 w-4' /> Adicionar cliente
-            </Button>
-          </AlertDialogTrigger>
+          <ClientDialogTrigger icon={UserPlus} text='Adicionar cliente' />
           <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Adicionar cliente</AlertDialogTitle>
-              <AlertDialogDescription>
-                Adicione as inforamações do cliente. Clique em salvar quando estiver pronto.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                name="name"
-                id="name"
-                onChange={handleChange}
-                className="col-span-3"
-              />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="phoneNumber" className="text-right">
-                  Phone Number
-                </Label>
-                <Input
-                  name="phoneNum"
-                  id="phoneNumber"
-                  onChange={handleChange}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
-                  E-mail
-                </Label>
-                <Input
-                  name="email"
-                  id="email"
-                  onChange={handleChange}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="cpf" className="text-right">
-                  CPF
-                </Label>
-                <Input
-                  name="cpf"
-                  id="cpf"
-                  onChange={handleChange}
-                  className="col-span-3"
-                />
-              </div>
-            </div>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                type="button"
-                variant='outline'
-                onClick={() => handleCancel()}
-              >
-                Cancelar
-              </AlertDialogCancel>
-              <AlertDialogAction
-                type="button"
-                onClick={() => handleAdd()}
-              >
-                Salvar
-              </AlertDialogAction>
-            </AlertDialogFooter>
+            <ClientDialogHeader
+              title='Adicionar cliente'
+              desc='Adicione as inforamações do cliente. Clique em salvar quando estiver pronto.'
+            />
+            <ClientDialogBody handleChange={handleChange} />
+            <ClientDialogFooter 
+              variant='outline'
+              onCancel={clear}
+              onSave={handleAdd}
+            />
           </AlertDialogContent>
         </AlertDialog>
-      </div>
+      </header>
 
-      <div className="relative overflow-x-auto mt-8">
+      <main className="relative overflow-x-auto mt-8">
         <Table>
           <TableCaption>Lista de todos os clientes</TableCaption>
           <TableHeader>
@@ -207,38 +160,42 @@ export default function Clients() {
             </TableRow>
           </TableHeader>
           <TableBody>
-          {clients.map(client =>
-            <TableRow key={client.id}>
-              <TableCell className="font-medium">{client.id}</TableCell>
-              <TableCell>{client.nome}</TableCell>
-              <TableCell>{client.telefone}</TableCell>
-              <TableCell>{client.email}</TableCell>
-              <TableCell>{client.cpfOuCnpj}</TableCell>
-              <TableCell>{dayjs(client.dataCadastro).format('DD/MM/YYYY - HH:mm')}</TableCell>
+          {clients.map(cliente =>
+            <TableRow key={cliente.id}>
+              <TableCell className="font-medium">{cliente.id}</TableCell>
+              <TableCell>{cliente.nome}</TableCell>
+              <TableCell>{cliente.telefone}</TableCell>
+              <TableCell>{cliente.email}</TableCell>
+              <TableCell>{cliente.cpfOuCnpj}</TableCell>
+              <TableCell>{dayjs(cliente.dataCadastro).format('DD/MM/YYYY - HH:mm')}</TableCell>
               <TableCell className='flex gap-3 align-center justify-center'>
-                <PenLine 
-                  onClick={() => handleEdit(client.id)}
-                  className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
-                />
+                <AlertDialog>
+                <ActionDialogTrigger icon={PenLine} onClick={() => getClientToEdit(cliente)} />
+                  <AlertDialogContent>
+                    <ClientDialogHeader
+                      title='Editar cliente'
+                      desc='Edite as inforamações do cliente. Clique em salvar quando estiver pronto.'
+                    />
+                    <EditDialogBody
+                      nameValue={client.name}
+                      numValue={client.phoneNum}
+                      emailValue={client.email}
+                      cpfValue={client.cpf}
+                      handleChange={handleChange}
+                    />
+                    <ClientDialogFooter
+                      variant='outline'
+                      onCancel={clear}
+                      onSave={() => handleEdit(cliente.id)}
+                    />
+                  </AlertDialogContent>
+                </AlertDialog>
 
                 <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Trash2
-                      className="h-5 w-5 text-blue-600 hover:text-blue-300 dark:text-violet-600 dark:hover:text-violet-300 cursor-pointer" 
-                    />
-                  </AlertDialogTrigger>
+                  <ActionDialogTrigger icon={Trash2} />
                   <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Deseja realmente excluir este cliente?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Essa é uma ação irreversível. Isso vai deletar permanentemente
-                        este cliente e deletar todos seus dados do servidor.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDelete(client.id)}>Excluir</AlertDialogAction>
-                    </AlertDialogFooter>
+                    <DeleteDialogHeader />
+                    <DeleteDialogFooter onDelete={() => handleDelete(cliente.id)} />
                   </AlertDialogContent>
                 </AlertDialog>
 
@@ -247,7 +204,7 @@ export default function Clients() {
           )}
           </TableBody>
         </Table>
-      </div>
+      </main>
     </PageRoot>
   )
 }
