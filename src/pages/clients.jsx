@@ -58,9 +58,8 @@ export default function Clients() {
       date: client.date
     }
 
-    await addClient(clientToAdd)
-    const updateClients = await getClients()
-    setClients(updateClients)
+    const response = await addClient(clientToAdd)
+    setClients(clients => [...clients, response])
     clear()
   }
 
@@ -87,18 +86,18 @@ export default function Clients() {
       date: client.date
     }
 
-    console.log(editedClient)
-
-    await editClient(id, editedClient)
-    const updateClients = await getClients()
-    setClients(updateClients)
+    const response = await editClient(id, editedClient)
+    setClients(clients => 
+      clients.map(client => (client.id === id ? response : client))
+    )
     clear()
   }
 
   async function handleDelete(id) {
     await deleteClient(id)
-    const updateClients = await getClients()
-    setClients(updateClients)
+    setClients(clients =>
+      clients.filter(client => client.id !== id)
+    )
   }
 
   function handleChange(e) {
