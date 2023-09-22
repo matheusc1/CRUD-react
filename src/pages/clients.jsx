@@ -46,6 +46,10 @@ export default function Clients() {
   }, [])
 
   async function handleAdd() {
+    setClient({
+      ...client,
+    })
+
     const clientToAdd = {
       nome: client.name,
       telefone: client.phoneNum,
@@ -70,6 +74,10 @@ export default function Clients() {
   }
 
   async function handleEdit(id) {
+    setClient({
+      ...client,
+    })
+
     const editedClient = {
       nome: client.name,
       telefone: client.phoneNum,
