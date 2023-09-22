@@ -26,6 +26,10 @@ npm install
 npm run dev
 ```
 
+Chave de acesso do sistema:
+email: admin@admin.com
+senha: 123456
+
 ## Tecnologias utilizadas ⚛️
 
 - [React](https://github.com/facebook/react)
