@@ -46,10 +46,6 @@ export default function Products() {
   }, [])
 
   async function handleAdd() {
-    setProduct({
-      ...product,
-    })
-
     const productToAdd = {
       nome: product.name,
       valor: product.value,
@@ -74,10 +70,6 @@ export default function Products() {
   }
 
   async function handleEdit(id) {
-    setProduct({
-      ...product
-    })
-
     const editedProduct = {
       nome: product.name,
       valor: product.value,
