@@ -1,13 +1,13 @@
 import React from 'react'
 import { AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '../AlertDialog'
 
-interface ClientDialogFooterProps {
+interface DialogFooterProps {
   variant: string
   onCancel: () => void
   onSave: () => void
 }
 
-export default function ClientDialogFooter({ variant, onCancel, onSave }: ClientDialogFooterProps) {
+export default function DialogFooter({ variant, onCancel, onSave }: DialogFooterProps) {
   return (
     <AlertDialogFooter>
       <AlertDialogCancel

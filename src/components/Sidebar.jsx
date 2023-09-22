@@ -13,7 +13,7 @@ export default function Sidebar() {
   return (
     <div className='overflow-hidden flex'>
       <nav className="bg-zinc-50 dark:bg-zinc-950 min-h-screen w-64 p-4">
-        <div className="flex gap-3 justify-center items-center mt-2 mb-20 dark:text-zinc-50 text-zinc-950">
+        <div className="flex gap-3 justify-center items-center mt-5 mb-20 dark:text-zinc-50 text-zinc-950">
           <Waves className='h-12 w-12' />
           <p className='text-5xl'>CRUD</p>
         </div>

@@ -13,14 +13,14 @@ import {
   TableRow,
 } from "../components/Table"
 import { AlertDialog, AlertDialogContent } from "../components/AlertDialog"
-import ClientDialogTrigger from '../components/ClientDialog/ClientDialogTrigger'
-import ClientDialogHeader from '../components/ClientDialog/ClientDialogHeader'
-import ClientDialogBody from '../components/ClientDialog/ClientDialogBody'
-import ClientDialogFooter from '../components/ClientDialog/ClientDialogFooter'
-import ActionDialogTrigger from '../components/ActionDialogTrigger'
+import DialogTrigger from '../components/Dialog/DialogTrigger'
+import DialogHeader from '../components/Dialog/DialogHeader'
+import ClientDialogBody from '../components/Dialog/ClientDialogBody'
+import DialogFooter from '../components/Dialog/DialogFooter'
+import ActionDialogTrigger from '../components/Dialog/ActionDialogTrigger'
 import DeleteDialogHeader from '../components/DeleteDialog/DeleteDialogHeader'
 import DeleteDialogFooter from '../components/DeleteDialog/DeleteDialogFooter'
-import EditDialogBody from '../components/EditDialogBody'
+import ClientDialogEdit from '../components/Dialog/ClientDialogEdit'
 import { getClients, addClient, deleteClient, editClient } from '../services/ApiServices'
 import dayjs from 'dayjs'
 
@@ -128,14 +128,14 @@ export default function Clients() {
           icon={User}
         />
         <AlertDialog>
-          <ClientDialogTrigger icon={UserPlus} text='Adicionar cliente' />
+          <DialogTrigger icon={UserPlus} text='Adicionar cliente' />
           <AlertDialogContent>
-            <ClientDialogHeader
+            <DialogHeader
               title='Adicionar cliente'
               desc='Adicione as inforamações do cliente. Clique em salvar quando estiver pronto.'
             />
             <ClientDialogBody handleChange={handleChange} />
-            <ClientDialogFooter 
+            <DialogFooter 
               variant='outline'
               onCancel={clear}
               onSave={handleAdd}
@@ -171,18 +171,18 @@ export default function Clients() {
                 <AlertDialog>
                 <ActionDialogTrigger icon={PenLine} onClick={() => getClientToEdit(cliente)} />
                   <AlertDialogContent>
-                    <ClientDialogHeader
+                    <DialogHeader
                       title='Editar cliente'
                       desc='Edite as inforamações do cliente. Clique em salvar quando estiver pronto.'
                     />
-                    <EditDialogBody
+                    <ClientDialogEdit
                       nameValue={client.name}
                       numValue={client.phoneNum}
                       emailValue={client.email}
                       cpfValue={client.cpf}
                       handleChange={handleChange}
                     />
-                    <ClientDialogFooter
+                    <DialogFooter
                       variant='outline'
                       onCancel={clear}
                       onSave={() => handleEdit(cliente.id)}

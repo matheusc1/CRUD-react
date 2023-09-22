@@ -1,8 +1,8 @@
 import React from "react"
-import { Label } from './Label'
-import { Input } from "./Input"
+import { Label } from '../Label'
+import { Input } from "../Input"
 
-interface ClientDialogBodyProps {
+interface ClientDialogEditProps {
   handleChange: () => void
   nameValue: string
   numValue: string
@@ -10,7 +10,7 @@ interface ClientDialogBodyProps {
   cpfValue: string
 }
 
-export default function ClientDialogBody({ handleChange, nameValue, numValue, emailValue, cpfValue }: ClientDialogBodyProps) {
+export default function ClientDialogEdit({ handleChange, nameValue, numValue, emailValue, cpfValue }: ClientDialogEditProps) {
   return (
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">

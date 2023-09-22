@@ -2,12 +2,12 @@ import React, { ElementType } from "react"
 import { AlertDialogTrigger } from '../AlertDialog'
 import { Button } from '../Button'
 
-interface ClientDialogTriggerProps {
+interface DialogTriggerProps {
   icon: ElementType
   text?: string
 }
 
-export default function ClientDialogTrigger({ icon: Icon, text }: ClientDialogTriggerProps) {
+export default function DialogTrigger({ icon: Icon, text }: DialogTriggerProps) {
   return (
     <AlertDialogTrigger asChild>
       <Button>

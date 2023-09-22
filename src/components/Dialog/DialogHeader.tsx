@@ -1,12 +1,12 @@
 import React from "react"
 import { AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from '../AlertDialog'
 
-interface ClientDialogHeaderProps {
+interface DialogHeaderProps {
   title: string
   desc: string
 }
 
-export default function ClientDialogHeader({ title, desc }: ClientDialogHeaderProps) {
+export default function DialogHeader({ title, desc }: DialogHeaderProps) {
   return (
     <AlertDialogHeader>
       <AlertDialogTitle>{title}</AlertDialogTitle>

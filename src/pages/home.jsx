@@ -4,6 +4,8 @@ import authServices from '../services/OtherServices'
 import { HomeRoot } from '../components/PagesRoot'
 import PageHeader from '../components/PageHeader'
 import Counter from '../components/Counter'
+import { useState, useEffect } from 'react'
+import { getClients, getProducts } from '../services/ApiServices'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -12,8 +14,21 @@ export default function Home() {
     authServices.logout(navigate)
   }
 
-  const clientList = [1, 2, 3]
-  const productList = [1, 2]
+  const [clientList, setClientList] = useState([])
+  const [productList, setProductList] = useState([])
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const clientList = await getClients()
+        const productList = await getProducts()
+        setClientList(clientList)
+        setProductList(productList)
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  }, [])
 
   return (  
     <HomeRoot>

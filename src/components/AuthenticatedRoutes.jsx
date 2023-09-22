@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import authServices from '../services/OtherServices'
 
 export default function AuthenticatedRoute({ children }) {
-  const navigate = useNavigate()
+  const token = authServices.getToken()
 
-  useEffect(() => {
-    authServices.validateUser(navigate)
-  }, [navigate])
+  if (!token) {
+    return <Navigate to="/login" replace />
+  }
 
   return children
 }

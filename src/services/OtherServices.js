@@ -26,19 +26,6 @@ function userLoggedIn() {
   return !!token
 }
 
-function validateUser(navigate) {
-  let loggedIn = userLoggedIn()
-
-  if (window.location.pathname == '/login') {
-    if (loggedIn) {
-      navigate('/')
-    }
-  }
-  else if(!loggedIn && window.pathname !== '/login')  {
-    navigate('/login')
-  }
-}
-
 const authServices = {
   saveToken,
   saveUser,
@@ -46,7 +33,6 @@ const authServices = {
   getUser,
   logout,
   userLoggedIn,
-  validateUser
 }
 
 export default authServices
