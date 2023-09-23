@@ -11,7 +11,7 @@ export default function ClientDialogBody({ handleChange }: ClientDialogBodyProps
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="name" className="text-right">
-          Name
+          Nome
         </Label>
         <Input
         name="name"
@@ -22,7 +22,7 @@ export default function ClientDialogBody({ handleChange }: ClientDialogBodyProps
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="phoneNumber" className="text-right">
-          Phone Number
+          Telefone
         </Label>
         <Input
           name="phoneNum"

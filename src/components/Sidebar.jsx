@@ -1,5 +1,5 @@
 import { Waves, Home, User, Package, LogOut } from 'lucide-react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, NavLink } from 'react-router-dom'
 import authServices from '../services/OtherServices'
 
 export default function Sidebar() {
@@ -15,22 +15,40 @@ export default function Sidebar() {
       <nav className="bg-zinc-50 dark:bg-zinc-950 min-h-screen w-64 p-4">
         <div className="flex gap-3 justify-center items-center mt-5 mb-20 dark:text-zinc-50 text-zinc-950">
           <Waves className='h-12 w-12' />
-          <p className='text-5xl'>CRUD</p>
+          <h1 className='text-5xl'>CRUD</h1>
         </div>
 
         <ul className='flex flex-col gap-6 text-zinc-900 dark:text-zinc-100 items-left ml-10 justify-center text-xl'>
-            <li className='flex gap-3 items-center hover:text-zinc-400'>
+          <li>
+            <NavLink
+              to='/'
+              className='flex gap-3 items-center hover:text-zinc-400
+              aria-[current=page]:text-blue-600 aria-[current=page]:dark:text-violet-600'
+            >
               <Home className='h-5 w-5' /> 
-              <Link to='/'>Overview</Link>
-            </li>
-            <li className='flex gap-3 items-center hover:text-zinc-400'>
-              <User className='h-5 w-5' />
-              <Link to='/clients'>Clients</Link>
-            </li>
-            <li className='flex gap-3 items-center hover:text-zinc-400'>
-              <Package className='h-5 w-5' />
-              <Link to='/products'>Products</Link>
-            </li>
+              <span>Home</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/clients'
+              className='flex gap-3 items-center hover:text-zinc-400
+              aria-[current=page]:text-blue-600 aria-[current=page]:dark:text-violet-600'
+            >
+              <User className='h-5 w-5' /> 
+              <span>Clientes</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/products'
+              className='flex gap-3 items-center hover:text-zinc-400
+              aria-[current=page]:text-blue-600 aria-[current=page]:dark:text-violet-600'
+            >
+              <Package className='h-5 w-5' /> 
+              <span>Produtos</span>
+            </NavLink>
+          </li>
         </ul>
 
         <div className='flex items-center justify-between mt-64 px-1'>

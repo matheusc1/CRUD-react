@@ -12,7 +12,7 @@ export default function ProductDialogBody({ handleChange }: ProductDialogBodyPro
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="name" className="text-right">
-          Name
+          Nome
         </Label>
         <Input
           name="name"
@@ -23,7 +23,7 @@ export default function ProductDialogBody({ handleChange }: ProductDialogBodyPro
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="value" className="text-right">
-          Value
+          Preço
         </Label>
         <Input
           name="value"
@@ -34,7 +34,7 @@ export default function ProductDialogBody({ handleChange }: ProductDialogBodyPro
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="quantity" className="text-right">
-          Quantity
+          Estoque
         </Label>
         <Input
           name="quantity"
@@ -45,7 +45,7 @@ export default function ProductDialogBody({ handleChange }: ProductDialogBodyPro
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="obs" className="text-right">
-          Observation
+          Observação
         </Label>
         <Textarea
           name="obs"

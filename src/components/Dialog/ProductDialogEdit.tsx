@@ -16,7 +16,7 @@ export default function ProductDialogEdit({ handleChange, nameValue, priceValue,
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="name" className="text-right">
-          Name
+          Nome
         </Label>
         <Input
           value={nameValue}
@@ -28,7 +28,7 @@ export default function ProductDialogEdit({ handleChange, nameValue, priceValue,
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="value" className="text-right">
-          Value
+          Preço
         </Label>
         <Input
           value={priceValue}
@@ -40,7 +40,7 @@ export default function ProductDialogEdit({ handleChange, nameValue, priceValue,
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="quantity" className="text-right">
-          Quantity
+          Estoque
         </Label>
         <Input
           value={quantityValue}
@@ -52,7 +52,7 @@ export default function ProductDialogEdit({ handleChange, nameValue, priceValue,
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="obs" className="text-right">
-          Observation
+          Observação
         </Label>
         <Textarea
           value={obsValue}

@@ -152,7 +152,7 @@ export default function Products() {
             <TableRow>
               <TableHead className="w-0.5">Id</TableHead>
               <TableHead>Nome</TableHead>
-              <TableHead>Valor</TableHead>
+              <TableHead>Preço</TableHead>
               <TableHead>Estoque</TableHead>
               <TableHead>Observação</TableHead>
               <TableHead>Data de registro</TableHead>
